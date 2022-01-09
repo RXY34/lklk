@@ -26,7 +26,6 @@ typedef struct _MemoryCommand
 	int magic;
 	int operation;
 	ptr64 data[10];
-	void* adat;
 } MemoryCommand;
 
 // Functions (Windows only)
@@ -140,7 +139,7 @@ RunCommand(MemoryCommand* cmd)
 	if (cmd->operation == baseOperation * 0x289)
 	{
 		void* pid = (void*)cmd->data[0];
-		void* resultAddr = (void*)cmd->adat;
+		void* resultAddr = (void*)cmd->data[1];
 		void* ProcessPtr = 0;
 
 		//Find process by ID
@@ -150,7 +149,7 @@ RunCommand(MemoryCommand* cmd)
 		}
 
 		//Find process Base Address
-		resultAddr = (void*) GetProcessWow64Process(ProcessPtr); //Return peb32 Base Address  ezt írtam át voidot
+		*(ptr64*)resultAddr = (ptr64)GetProcessWow64Process(ProcessPtr); //Return peb32 Base Address  ezt írtam át voidot
 		//*(ptr64*)resultAddr = (ptr64)GetBaseAddress(ProcessPtr); //Return Base Address
 		return EFI_SUCCESS;
 	}
