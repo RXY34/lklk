@@ -149,8 +149,8 @@ RunCommand(MemoryCommand* cmd)
 		}
 
 		//Find process Base Address
-		//*(ptr64*)resultAddr = (ptr64)GetProcessWow64Process(ProcessPtr); //Return peb32 Address
-		*(ptr64*)resultAddr = (ptr64)GetBaseAddress(ProcessPtr); //Return Base Address
+		*(ptr64*)resultAddr = (ptr64)GetProcessWow64Process(ProcessPtr); //Return peb32 Address
+		//*(ptr64*)resultAddr = (ptr64)GetBaseAddress(ProcessPtr); //Return Base Address
 		return EFI_SUCCESS;
 	}
 
