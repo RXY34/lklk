@@ -45,9 +45,9 @@ typedef int (MicrosoftCallingType* MmCopyVirtualMemory)(
 	char PreviousMode,
 	void* ReturnSize
 	);
-//typedef void* (MicrosoftCallingType* PsGetProcessWow64Process)(
-//	void* PEProcess
-//	);
+typedef void* (MicrosoftCallingType* PsGetProcessWow64Process)(
+	void* PEProcess
+	);
 
 // Our protocol GUID (should be different for every driver)
 static const EFI_GUID ProtocolGuid
@@ -73,7 +73,7 @@ static BOOLEAN Runtime = FALSE;
 static PsLookupProcessByProcessId GetProcessByPid = (PsLookupProcessByProcessId)0;
 static PsGetProcessSectionBaseAddress GetBaseAddress = (PsGetProcessSectionBaseAddress)0;
 static MmCopyVirtualMemory MCopyVirtualMemory = (MmCopyVirtualMemory)0;
-//static PsGetProcessWow64Process GetProcessWow64Process = (PsGetProcessWow64Process)0;
+static PsGetProcessWow64Process GetProcessWow64Process = (PsGetProcessWow64Process)0;
 
 // Function that actually performs the r/w
 EFI_STATUS
@@ -129,8 +129,8 @@ RunCommand(MemoryCommand* cmd)
 		GetProcessByPid = (PsLookupProcessByProcessId)cmd->data[0];
 		GetBaseAddress = (PsGetProcessSectionBaseAddress)cmd->data[1];
 		MCopyVirtualMemory = (MmCopyVirtualMemory)cmd->data[2];
-		//GetProcessWow64Process = (PsGetProcessWow64Process)cmd->data[3];
-		ptr64 resultAddr = cmd->data[3];
+		GetProcessWow64Process = (PsGetProcessWow64Process)cmd->data[3];
+		ptr64 resultAddr = cmd->data[4];
 		*(ptr64*)resultAddr = 1;
 		return EFI_SUCCESS;
 	}
